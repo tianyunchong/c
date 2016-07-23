@@ -1,0 +1,10 @@
+/**
+ * 字符串的测试使用
+ */
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char aa[10];
+    strcpy(aa, "xiaoming");
+    printf("%s\n", aa);
+}

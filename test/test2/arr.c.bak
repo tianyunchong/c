@@ -1,0 +1,42 @@
+//
+// Created by zyh on 16/7/20.
+//  数组的使用测试
+//
+#include <stdio.h>
+int main() {
+	//printf("%c", 'a');
+	//------------------------
+	/** 数组测试使用 */
+//	int arr[5] = {1,2, 5, 7,9};
+//	for (int i = 1;i<= 5;i++) {
+//		printf("%d\n", arr[i-1]);
+//	}
+	//--------------------------
+	/** 二维数组的使用 */
+//	int arr[4][2];
+//        int a = 1;
+//	for (int i = 1; i<= 4; i++) {
+//		for (int j=1; j<=2; j++) {
+//                    arr[i][j] = a++;
+//		}
+//	}
+//        for (int i=1; i<=4; i++) {
+//            for (int j=1; j <= 2; j++) {
+//                printf("%d\n", arr[i][j]);
+//            }
+//        }
+	//---------------------------------
+	/**  scanf输入字符串*/
+//	char str[10];
+//	scanf("%s", str);
+//	printf("%s\n", str);
+	//---------------------------------
+	/** 输出下地址 */
+	int aa = 11;
+	void *bbb;
+	bbb = &aa;
+	printf("%x\n", (int)bbb);
+	printf("%d\n", aa);
+	return 0;
+}
+
