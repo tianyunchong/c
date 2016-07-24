@@ -1,0 +1,17 @@
+/**
+ * 共同体的测试使用
+ */
+#include "stdio.h"
+int main() {
+    union aa {
+        int f_radius;
+        float t_radius;
+    };
+    union aa r = {1};
+    printf("r.f_radius = %d\n", r.f_radius);
+    r.f_radius = 3;
+    printf("r.f_radius = %d\n", r.f_radius);
+    r.t_radius = 2.1;
+    printf("r.t_radius = %f\n", r.t_radius);
+    printf("f_radius = %d\n", r.f_radius);
+}
