@@ -4,7 +4,7 @@
 //
 #include <stdio.h>
 int main() {
-	printf("%c", 'a');
+	printf("%c\n", 'a');
 	return 0;
 }
 
