@@ -1,0 +1,60 @@
+/**
+    结构体的学习测试
+*/
+
+#include <stdio.h>
+#include <string.h>
+int main() {
+    /** 简单的结构体的使用 */
+    // struct student {
+    //     char name[10];
+    //     float weight;
+    //     int years_old;
+    //     char sex;
+    //     int score;
+    // };
+    // struct student boy = {"xiaoming", 120, 21, 'm', 90};
+    // strcpy(boy.name, "xiaowang");
+    // printf("%s\n", boy.name);\
+    //---------------------------------------------------------
+    /** 结构体数组的使用 */
+    // struct student
+    // {
+    //     char name[10];
+    //     float weight;
+    //     int years_old;
+    //     char sex;
+    //     int score;
+    // };
+    // struct student strudents[10];
+    // char str[20];
+    // for (int i = 1; i <= 2 ; i++) {
+    //     sprintf(str, "%s%d", "wangming", i);
+    //     strcpy(strudents[i - 1].name , str);
+    //     strudents[i - 1].weight = i + 12;
+    //     printf("%s\n", strudents[i - 1].name);
+    //     printf("%.2f\n", strudents[i - 1].weight);
+    // }
+    //---------------------------------------------------------
+    /** 结构体指针的使用 */
+    //一重结构体指针
+    struct student {
+        char name[10];
+        float weight;
+        int years_old;
+        char sex;
+        int score;
+    };
+    struct student boy = {
+        "xiaoming",
+        116,
+        21,
+        'n',
+        98
+    };
+    struct student *newstu;
+    newstu = &boy;
+    printf("%s\n", (*newstu).name);
+    printf("%s\n", newstu->name);
+    return 0;
+}

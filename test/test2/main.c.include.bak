@@ -1,0 +1,13 @@
+/**
+ * 文件的引入
+ */
+#include <stdio.h>
+#include "circle.c"
+int main() {
+	double result;
+	result = Circumference(3);
+	printf("the Circumference is %lf\n", result);
+	result = Area(3);
+	printf("the Area is %lf\n", result);
+	return 0;
+}

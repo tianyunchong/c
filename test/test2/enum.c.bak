@@ -1,0 +1,21 @@
+/**
+ * 枚举的使用测试
+ */
+#include "stdio.h"
+int main() {
+	/** 枚举常量的定义使用  */
+	// enum week {Monday = 1, Tuesday, Wednesday = 4, Thursday, Friday, Saturday, Sunday};
+	// printf("Monday is %d\n", Monday);
+	// printf("Thursday is %d\n", Tuesday);
+	// printf("Wednesday is %d\n", Wednesday);
+	// printf("Thursday is %d\n", Thursday);
+	//----------------------------------------------------
+	/** 枚举变量的定义使用 */
+	// enum week {Monday, Tuesday};
+	// enum week day1;
+	// day1 = Monday;
+	// printf("day1 is %d\n", day1);
+	//------------------------------------------------------
+	/** 枚举数组的使用 */
+
+}

@@ -1,0 +1,15 @@
+/**
+ * 函数的使用测试
+ */
+#include "stdio.h"
+int addNum(int a, int b);
+int main() {
+	int c ;
+	c = addNum(11, 12);
+	printf("%d\n", c);
+	return 0;
+}
+
+int addNum(int a , int b) {
+	return a + b;
+}

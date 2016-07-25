@@ -1,0 +1,14 @@
+/**
+ * 类型定义符的使用
+ */
+#include "stdio.h"
+typedef int my_int;
+int main() {
+    int radius;
+    my_int radius2;
+    radius = 2;
+    radius2 = 22;
+    printf("radius = %d\n", radius);
+    printf("radius2 = %d\n", radius2);
+    return 0;
+}
