@@ -10,27 +10,22 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <string.h>
+#include <errno.h>
 char *getIp(char *host);
+void GetHost(char * src, char * web, char * file, int * port);
 int main()
 {
 	char *ip;
-	char host[1024], GET[1024];
-	char Header[BUFSIZ];
 	static char text[BUFSIZ];
-	char * pGet = 0;
-	char *pHost;
-	char *url;
-	int i = 0;
-	FILE * pf;
+	int portnumber, nbytes;
+	char host_addr[256];
+	char host_file[1024];
+	char request[1024];
+	char html[BUFSIZ * 1000];
 	/** 循环请求的地址 */
-	char myurl[] = "http://www.baidu.com";
-	pHost = myurl;
-	do {
-		host[i] = *pHost;
-		pHost++;
-		i++;
-	} while (*pHost != '/');
-	ip = (*getIp)("www.baidu.com");
+	char myurl[] = "http://www.gongchang.com/";
+	GetHost(myurl, host_addr, host_file, &portnumber);/*分析网址、端口、文件名等*/
+	ip = (*getIp)(host_addr);
 	/** 创建套接字 */
 	int server_sock;
 	server_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -41,31 +36,74 @@ int main()
 	serv_addr.sin_addr.s_addr = inet_addr(ip);  //具体的IP地址
 	serv_addr.sin_port = htons(80);  //端口
 	connect(server_sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-	strcpy(GET, pHost);
-	/** 声称请求header头 */
-	strcat(Header, "GET / ");
-	strcat(Header, GET);
-	strcat(Header, "HTTP/1.1/r/n");
-	strcat(Header, "Accept: */*/r/n");
-	strcat(Header, "Accept-Language: zh-cn/r/n");
-	strcat(Header, "User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022; InfoPath.2)/r/n");
-	strcat(Header, "Host: ");
-	strcat(Header, host);
-	strcat(Header, "/r/nConnection: Keep-Alive/r/n");
-	strcat(Header, "/r/n/r/n");
-	/** 发送get请求 */
-	send(server_sock, Header, strlen(Header), 0);
-	pf = fopen("1.txt", "w");
-	while (recv(server_sock, text, BUFSIZ, 0) > 0) {
-		printf("%s", text);
-		fputs(text, pf);
-		memset(text, '\0', sizeof(text));
+	sprintf(request, "GET /%s HTTP/1.1\r\nAccept: */*\r\nAccept-Language: zh-cn\r\n\
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)\r\n\
+Host: %s:%d\r\nConnection: Close\r\n\r\n", host_file, host_addr, portnumber);
+	/*发送http请求request*/
+	int send, totalsend;
+	send = 0; totalsend = 0;
+	nbytes = strlen(request);
+	while (totalsend < nbytes) {
+		send = write(server_sock, request + totalsend, nbytes - totalsend);
+		if (send == -1)  {
+			printf("send error!%s\n", strerror(errno));
+			exit(0);
+		}
+		totalsend += send;
 	}
-	fclose(pf);
+	/** 发送get请求 */
+	while (recv(server_sock, text, BUFSIZ, 0) > 0) {
+		strcat(html, text);
+		memset(text, 0, sizeof(text));
+	}
+	printf("%s\n", html);
 	//关闭套接字
 	close(server_sock);
 	return 0;
 }
+
+
+/**************************************************************
+功能：从字符串src中分析出网站地址和端口，并得到用户要下载的文件
+***************************************************************/
+void GetHost(char * src, char * web, char * file, int * port)  {
+	char * pA;
+	char * pB;
+	memset(web, 0, sizeof(*web));
+	memset(file, 0, sizeof(*file));
+	*port = 0;
+	if (!(*src))   {
+		return;
+	}
+	pA = src;
+	if (!strncmp(pA, "http://", strlen("http://"))) {
+		pA = src + strlen("http://");
+	} else if (!strncmp(pA, "https://", strlen("https://"))) {
+		pA = src + strlen("https://");
+	}
+	pB = strchr(pA, '/');
+	if (pB)  {
+		memcpy(web, pA, strlen(pA) - strlen(pB));
+		if (pB + 1)  {
+			memcpy(file, pB + 1, strlen(pB) - 1);
+			file[strlen(pB) - 1] = 0;
+		}
+	}	else  {
+		memcpy(web, pA, strlen(pA));
+	}
+	if (pB) {
+		web[strlen(pA) - strlen(pB)] = 0;
+	}	else {
+		web[strlen(pA)] = 0;
+	}
+	pA = strchr(web, ':');
+	if (pA) {
+		*port = atoi(pA + 1);
+	}	else {
+		*port = 80;
+	}
+}
+
 
 
 
