@@ -13,7 +13,10 @@
 #include <errno.h>
 char *getIp(char *host);
 void GetHost(char * src, char * web, char * file, int * port);
-int main()
+int getHtml(char myurl[], char html[]);
+
+
+int getHtml(char myurl[], char html[])
 {
 	char *ip;
 	static char text[BUFSIZ];
@@ -21,9 +24,7 @@ int main()
 	char host_addr[256];
 	char host_file[1024];
 	char request[1024];
-	char html[BUFSIZ * 1000];
 	/** 循环请求的地址 */
-	char myurl[] = "http://www.gongchang.com/";
 	GetHost(myurl, host_addr, host_file, &portnumber);/*分析网址、端口、文件名等*/
 	ip = (*getIp)(host_addr);
 	/** 创建套接字 */
@@ -47,7 +48,7 @@ Host: %s:%d\r\nConnection: Close\r\n\r\n", host_file, host_addr, portnumber);
 		send = write(server_sock, request + totalsend, nbytes - totalsend);
 		if (send == -1)  {
 			printf("send error!%s\n", strerror(errno));
-			exit(0);
+			return 0;
 		}
 		totalsend += send;
 	}
@@ -56,10 +57,9 @@ Host: %s:%d\r\nConnection: Close\r\n\r\n", host_file, host_addr, portnumber);
 		strcat(html, text);
 		memset(text, 0, sizeof(text));
 	}
-	printf("%s\n", html);
 	//关闭套接字
 	close(server_sock);
-	return 0;
+	return 1;
 }
 
 
